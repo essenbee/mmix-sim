@@ -260,7 +260,70 @@ namespace Essenbee.Z80
           { 0xBE, new Instruction ( "PUSHGO", (Flags)0xaa, 0, 0, 3, UNDEF ) }, 
           { 0xBF, new Instruction ( "PUSHGOI", (Flags)0xa9, 0, 0, 3, UNDEF ) }, 
           // Logic and Control Instructions
-
+          { 0xC0, new Instruction ( "OR",(Flags)0x2a,0,0,1,UNDEF ) }, 
+          { 0xC1, new Instruction ( "ORI",(Flags)0x29,0,0,1,UNDEF ) }, 
+          { 0xC2, new Instruction ( "ORN",(Flags)0x2a,0,0,1,UNDEF ) }, 
+          { 0xC3, new Instruction ( "ORNI",(Flags)0x29,0,0,1,UNDEF ) }, 
+          { 0xC4, new Instruction ( "NOR",(Flags)0x2a,0,0,1,UNDEF ) }, 
+          { 0xC5, new Instruction ( "NORI",(Flags)0x29,0,0,1,UNDEF ) }, 
+          { 0xC6, new Instruction ( "XOR",(Flags)0x2a,0,0,1,UNDEF ) }, 
+          { 0xC7, new Instruction ( "XORI",(Flags)0x29,0,0,1,UNDEF ) }, 
+          { 0xC8, new Instruction ( "AND",(Flags)0x2a,0,0,1,UNDEF ) }, 
+          { 0xC9, new Instruction ( "ANDI",(Flags)0x29,0,0,1,UNDEF ) }, 
+          { 0xCA, new Instruction ( "ANDN",(Flags)0x2a,0,0,1,UNDEF ) }, 
+          { 0xCB, new Instruction ( "ANDNI",(Flags)0x29,0,0,1,UNDEF ) }, 
+          { 0xCC, new Instruction ( "NAND",(Flags)0x2a,0,0,1,UNDEF ) }, 
+          { 0xCD, new Instruction ( "NANDI",(Flags)0x29,0,0,1,UNDEF ) }, 
+          { 0xCE, new Instruction ( "NXOR",(Flags)0x2a,0,0,1,UNDEF ) }, 
+          { 0xCF, new Instruction ( "NXORI",(Flags)0x29,0,0,1,UNDEF ) }, 
+          { 0xD0, new Instruction ( "BDIF",(Flags)0x2a,0,0,1,UNDEF ) }, 
+          { 0xD1, new Instruction ( "BDIFI",(Flags)0x29,0,0,1,UNDEF ) }, 
+          { 0xD2, new Instruction ( "WDIF",(Flags)0x2a,0,0,1,UNDEF ) }, 
+          { 0xD3, new Instruction ( "WDIFI",(Flags)0x29,0,0,1,UNDEF ) }, 
+          { 0xD4, new Instruction ( "TDIF",(Flags)0x2a,0,0,1,UNDEF ) }, 
+          { 0xD5, new Instruction ( "TDIFI",(Flags)0x29,0,0,1,UNDEF ) }, 
+          { 0xD6, new Instruction ( "ODIF",(Flags)0x2a,0,0,1,UNDEF ) }, 
+          { 0xD7, new Instruction ( "ODIFI",(Flags)0x29,0,0,1,UNDEF ) }, 
+          { 0xD8, new Instruction ( "MUX",(Flags)0x2a,(int)R.M,0,1,UNDEF ) }, 
+          { 0xD9, new Instruction ( "MUXI",(Flags)0x29,(int)R.M,0,1,UNDEF ) }, 
+          { 0xDA, new Instruction ( "SADD",(Flags)0x2a,0,0,1,UNDEF ) }, 
+          { 0xDB, new Instruction ( "SADDI",(Flags)0x29,0,0,1,UNDEF ) }, 
+          { 0xDC, new Instruction ( "MOR",(Flags)0x2a,0,0,1,UNDEF ) }, 
+          { 0xDD, new Instruction ( "MORI",(Flags)0x29,0,0,1,UNDEF ) }, 
+          { 0xDE, new Instruction ( "MXOR",(Flags)0x2a,0,0,1,UNDEF ) }, 
+          { 0xDF, new Instruction ( "MXORI",(Flags)0x29,0,0,1,UNDEF ) }, 
+          { 0xE0, new Instruction ( "SETH",(Flags)0x20,0,0,1,UNDEF ) }, 
+          { 0xE1, new Instruction ( "SETMH",(Flags)0x20,0,0,1,UNDEF ) }, 
+          { 0xE2, new Instruction ( "SETML",(Flags)0x20,0,0,1,UNDEF ) }, 
+          { 0xE3, new Instruction ( "SETL",(Flags)0x20,0,0,1,UNDEF ) }, 
+          { 0xE4, new Instruction ( "INCH",(Flags)0x30,0,0,1,UNDEF ) }, 
+          { 0xE5, new Instruction ( "INCMH",(Flags)0x30,0,0,1,UNDEF ) }, 
+          { 0xE6, new Instruction ( "INCML",(Flags)0x30,0,0,1,UNDEF ) }, 
+          { 0xE7, new Instruction ( "INCL",(Flags)0x30,0,0,1,UNDEF ) }, 
+          { 0xE8, new Instruction ( "ORH",(Flags)0x30,0,0,1,UNDEF ) }, 
+          { 0xE9, new Instruction ( "ORMH",(Flags)0x30,0,0,1,UNDEF ) }, 
+          { 0xEA, new Instruction ( "ORML",(Flags)0x30,0,0,1,UNDEF ) }, 
+          { 0xEB, new Instruction ( "ORL",(Flags)0x30,0,0,1,UNDEF ) }, 
+          { 0xEC, new Instruction ( "ANDNH",(Flags)0x30,0,0,1,UNDEF ) }, 
+          { 0xED, new Instruction ( "ANDNMH",(Flags)0x30,0,0,1,UNDEF ) }, 
+          { 0xEE, new Instruction ( "ANDNML",(Flags)0x30,0,0,1,UNDEF ) }, 
+          { 0xEF, new Instruction ( "ANDNL",(Flags)0x30,0,0,1,UNDEF ) }, 
+          { 0xF0, new Instruction ( "JMP",(Flags)0x40,0,0,1,UNDEF ) }, 
+          { 0xF1, new Instruction ( "JMPB",(Flags)0x40,0,0,1,UNDEF ) }, 
+          { 0xF2, new Instruction ( "PUSHJ",(Flags)0xe0,0,0,1,UNDEF ) },
+          { 0xF3, new Instruction ( "PUSHJB",(Flags)0xe0,0,0,1,UNDEF ) }, 
+          { 0xF4, new Instruction ( "GETA",(Flags)0x60,0,0,1,UNDEF ) }, 
+          { 0xF5, new Instruction ( "GETAB",(Flags)0x60,0,0,1,UNDEF ) }, 
+          { 0xF6, new Instruction ( "PUT",(Flags)0x02,0,0,1,UNDEF ) }, 
+          { 0xF7, new Instruction ( "PUTI",(Flags)0x01,0,0,1,UNDEF ) }, 
+          { 0xF8, new Instruction ( "POP",(Flags)0x80,(int)R.J,0,3,UNDEF ) }, 
+          { 0xF9, new Instruction ( "RESUME",(Flags)0x00,0,0,5,UNDEF ) }, 
+          { 0xFA, new Instruction ( "SAVE",(Flags)0x20,0,20,1,UNDEF ) }, 
+          { 0xFB, new Instruction ( "UNSAVE",(Flags)0x82,0,20,1,UNDEF ) }, 
+          { 0xFC, new Instruction ( "SYNC",(Flags)0x01,0,0,1,UNDEF ) }, 
+          { 0xFD, new Instruction ( "SWYM",(Flags)0x00,0,0,1,UNDEF ) }, 
+          { 0xFE, new Instruction ( "GET",(Flags)0x20,0,0,1,UNDEF ) }, 
+          { 0xFF, new Instruction ( "TRIP",(Flags)0x0a,255,0,5,UNDEF ) },
         };
 
         public void ConnectToBus(IBus bus) => _bus = bus;
@@ -363,8 +426,8 @@ namespace Essenbee.Z80
             //  var d = (sbyte)ReadFromBus(address++);
             //  var e = d > 0 ? d + 2 : d - 2;
 
-            //  opCode = opCode.Replace("+d", $"{d.ToString("+0;-#", c)}", StringComparison.InvariantCulture);
-            //  opCode = opCode.Replace("e", $"${e.ToString("+0;-#", c)}", StringComparison.InvariantCulture);
+            //  opCode = opCode.Replace("+d", $"{d.ToString("+0;-(Flags)0x", c)}", StringComparison.InvariantCulture);
+            //  opCode = opCode.Replace("e", $"${e.ToString("+0;-(Flags)0x", c)}", StringComparison.InvariantCulture);
             //}
             //else if (operation.AddressingMode1 == IMX)
             //{
