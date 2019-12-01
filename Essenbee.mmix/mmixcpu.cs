@@ -1,5 +1,4 @@
-﻿using Essenbee.mmix;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -50,13 +49,15 @@ namespace Essenbee.mmix
         public long[] SpecialRegister { get; set; } = new long[32];
         public MemNode MemoryRoot { get; private set; } // Root of simulated Memory
         public Dictionary<byte, Instruction> Instructions { get; } = new Dictionary<byte, Instruction>();
+        public ulong InstructionPointer { get; set; }
 
         private IBus _bus = null!;
-        private long _absoluteAddress = 0x0000000000000000;
+        private long _absoluteAddress = 0x00000000_00000000;
         private byte _currentOpCode = 0x00;
         private int _clockCycles = 0;
         private uint _priority = 314159265; // Pseudorandom time stamp counter
         private MemNode _lastAccessed;      // Memory node most recently accessed
+        private bool _isResuming = false;
 
         public enum R
         {
@@ -414,13 +415,49 @@ namespace Essenbee.mmix
         {
             if (_clockCycles == 0)
             {
-                //var address = PC;
-                //_currentOpCode = ReadFromBus(address);
-                //var (opCode, operation) = FetchNextInstruction(_currentOpCode, ref address);
-                //PC = address;
-                //_currentOpCode = opCode;
-                //_clockCycles = operation.TStates;
-                //operation.Op(_currentOpCode);
+                Instruction instr = null;
+                byte xx, yy, zz;
+                uint op;
+                byte opCode;
+
+                if (_isResuming)
+                {
+                    InstructionPointer -= 4;
+                    op = (byte)(SpecialRegister[(int)R.X] & 0x00000000_FFFFFFFF);
+                }
+                else
+                {
+                    op = FetchNextInstruction();
+                }
+
+                opCode = (byte)(op >> 24);
+                instr = Instructions[opCode];
+                
+                xx = (byte)((op >> 16) & 0xFF);
+                yy = (byte)((op >> 8) & 0xFF);
+                zz = (byte)(op & 0xFF);
+
+                if (CheckFlag(Flags.RelAddress, instr.InstructionFlags))
+                {
+                    // ToDo: Convert relative address to absolute address
+                }
+
+                if (CheckFlag(Flags.XDest, instr.InstructionFlags))
+                {
+                    // ToDo: Install $X as the destination
+                }
+
+                // ToDo: if high tetra-byte of loc is >= 0x20000000, its a privileged instruction - handle it!
+
+                instr.Op(opCode, xx, yy, zz);
+
+                // ToDo: check for interrupt
+                // ToDo: Update clock
+
+                if (_isResuming && instr.Mnemonic != "RESUME")
+                {
+                    _isResuming = false;
+                }
             }
 
             _clockCycles--;
@@ -430,24 +467,77 @@ namespace Essenbee.mmix
 
         private byte ReadFromBus(long addr) => _bus.Read(addr, false);
         private void WriteToBus(long addr, byte data) => _bus.Write(addr, data);
-        private byte Fetch(Dictionary<byte, Instruction> lookupTable) =>
+
+        private byte ReadMemoryByte(ulong addr)
+        {
+            return 0x00;
+        }
+
+        private void WriteMemoryByte(ulong addr, byte data)
+        {
+
+        }
+
+        private short ReadMemoryWyrd(ulong addr)
+        {
+            return 0x0000;
+        }
+
+        private void WriteMemoryWyrd(ulong addr, short data)
+        {
+
+        }
+
+        private int ReadMemoryTetra(ulong addr)
+        {
+            return 0x00000000;
+        }
+
+        private void WriteMemoryTetra(ulong addr, int data)
+        {
+
+        }
+
+        private long ReadMemoryOcta(ulong addr)
+        {
+            return 0x00000000_00000000;
+        }
+
+        private void WriteMemoryOcta(ulong addr, long data)
+        {
+
+        }
+
+        private byte Fetch()
+        {
             //lookupTable[_currentOpCode].AddressingMode1();
-            ReadFromBus(_absoluteAddress);
+            return ReadFromBus(_absoluteAddress);
+        }
 
-        private (byte opCode, Instruction operation) PeekNextInstruction(byte code, ref long address) =>
-          FetchNextInstruction(code, ref address);
+        private uint PeekNextInstruction(byte code, ref ulong address) =>
+          FetchNextInstruction();
 
-        private (byte opCode, Instruction operation) FetchNextInstruction(byte code, ref long address) => GetInstruction(code);
+        private uint FetchNextInstruction()
+        {
+            var loc = InstructionPointer;
+            var ll = FindMemory(loc);
+            var instr = ll.Tetra;
+            ll.Frequency++;
+
+            return instr;
+        }
 
         private (long opAddress, string opString, long nextAddress) DisassembleInstruction(long address, CultureInfo c)
         {
             var opAddress = address;
-            var aByte = ReadFromBus(address++);
-            Instruction operation;
+            var opCode = string.Empty;
 
-            (_, operation) = GetInstruction(aByte);
+            //var aByte = ReadFromBus(address++);
+            //Instruction operation;
 
-            var opCode = $"{operation.Mnemonic}";
+            //(_, operation) = GetInstruction(aByte);
+
+            //var opCode = $"{operation.Mnemonic}";
 
             // Operands
             //if (operation.AddressingMode1 == IMM)
@@ -502,6 +592,14 @@ namespace Essenbee.mmix
             return newMemNode;
         }
 
-        private (byte opCode, Instruction operation) GetInstruction(byte code) => (code, Instructions[code]);
+        private bool CheckFlag(Flags flag, Flags F )
+        {
+            if ((F & flag) == flag)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

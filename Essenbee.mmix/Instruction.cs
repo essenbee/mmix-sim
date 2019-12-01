@@ -5,13 +5,14 @@ namespace Essenbee.mmix
     public class Instruction
     {
         public string Mnemonic { get; set; }
-        public Func<byte, byte> Op { get; set; }
+        public Func<byte, byte, byte, byte, byte> Op { get; set; }
         public Flags InstructionFlags { get; set; }
         public byte SpecialRegInput { get; set; }
         public byte Mems { get; set; }
         public byte Oops { get; set; }
 
-        public Instruction(string mnemonic, Flags flags, byte thirdOperand, byte mems, byte oops, Func<byte, byte> op)
+        public Instruction(string mnemonic, Flags flags, byte thirdOperand, byte mems, byte oops, 
+            Func<byte, byte, byte, byte, byte> op)
         {
             Mnemonic = mnemonic;
             InstructionFlags = flags;
