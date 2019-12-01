@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Essenbee.Z80
+namespace Essenbee.mmix
 {
     public partial class mmixcpu
     {

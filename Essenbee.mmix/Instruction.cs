@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Essenbee.Z80
+namespace Essenbee.mmix
 {
     public class Instruction
     {
@@ -25,12 +25,12 @@ namespace Essenbee.Z80
     [Flags]
     public enum Flags
     {
-        ZImmediate = 1 << 0,
-        ZSource = 1 << 1,
-        YImmediate = 1 << 2,
-        YSource = 1 << 3,
-        XSource = 1 << 4,
-        XDest= 1 << 5,
+        ZImmediate = 1 << 0, // Z is a value rather than a register
+        ZSource = 1 << 1,    // Z indicates a register
+        YImmediate = 1 << 2, // Y is a value rather than a register
+        YSource = 1 << 3,    // Y indicates a register
+        XSource = 1 << 4,    // Y indicates a register
+        XDest = 1 << 5,
         RelAddress = 1 << 6,
         PushPop = 1 << 7,
     }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Essenbee.Z80
+namespace Essenbee.mmix
 {
     public interface IBus
     {
